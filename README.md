@@ -4,6 +4,12 @@ This bundle provides **ready to use official Facebook SDK client** and common Fa
 
 Facebook SDK client is **integrated with Symfony session storage** (instead of vanilla client which uses native PHP sessions).
 
+## Bundles Using This Bundle
+
+* [laelaps/symfony-facebook-authentication-bundle](https://github.com/laelaps/symfony-facebook-authentication-bundle) (of course)
+
+If you are using this bundle, contact me or update README in your pull request.
+
 ## For Facebook SDK Users
 
 ### Using Facebook SDK
