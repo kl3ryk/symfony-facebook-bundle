@@ -5,7 +5,7 @@ namespace Laelaps\Bundle\Facebook;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @implements \Laelaps\Bundle\Facebook\FacebookExtensionInterface
+ * This trait covers methods defined directly in FacebookExtensionInferace.
  */
 trait FacebookExtensionTrait
 {
