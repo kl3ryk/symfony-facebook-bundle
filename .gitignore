@@ -1,13 +1,20 @@
 # Bootstrap
 app/bootstrap*
 
+# Configuration files
+app/config/parameters.ini
+app/config/parameters.yml
+
+# Composer
+composer.lock
+
+# Editors
+*sublime-project
+*sublime-workspace
+
 # Symfony directories
 vendor/*
 */logs/*
 */cache/*
 web/uploads/*
 web/bundles/*
-
-# Configuration files
-app/config/parameters.ini
-app/config/parameters.yml

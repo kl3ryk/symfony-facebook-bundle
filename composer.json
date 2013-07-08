@@ -1,0 +1,29 @@
+{
+    "authors": [
+        {
+            "name": "Mateusz Charytoniuk",
+            "email": "mateusz.charytoniuk@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Laelaps\\Bundle\\Facebook": ""
+        }
+    },
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "name": "laelaps/symfony-facebook-bundle",
+    "require": {
+        "ext-curl": "*",
+        "facebook/php-sdk": "~3.2,>=3.2.2",
+        "php": ">=5.4",
+        "symfony/http-foundation": "~2.2"
+    },
+    "require-dev": {
+        "absolvent/phpunit-symfony": "~2.4,>=2.4.3",
+        "fabpot/php-cs-fixer": "~0.2",
+        "sebastian/diff": "1.0.*@dev",
+        "symfony/framework-bundle": "~2.2"
+    },
+    "target-dir": "Laelaps/Bundle/Facebook"
+}

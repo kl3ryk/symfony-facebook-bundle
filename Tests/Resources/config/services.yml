@@ -1,0 +1,3 @@
+services:
+    session.storage.mock:
+        class: Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage
