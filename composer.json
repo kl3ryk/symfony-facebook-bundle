@@ -10,6 +10,7 @@
             "Laelaps\\Bundle\\Facebook": ""
         }
     },
+    "keywords": ["bundle", "facebook", "symfony"],
     "license": "MIT",
     "minimum-stability": "stable",
     "name": "laelaps/symfony-facebook-bundle",
