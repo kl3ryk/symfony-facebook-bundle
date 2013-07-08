@@ -23,7 +23,7 @@ class YourSymfonyController extends Controller
 {
     function indexAction()
     {
-        $readyToUseFacebookSdk = $this->get('facebook');        
+        $readyToUseFacebookSdk = $this->get('facebook');
         // ... done
     }
 }
@@ -85,28 +85,20 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class YourExtension extends Extension implements FacebookExtensionInterface
 {
     use FacebookExtensionTrait;
-    
-    public function load(array $configs, ContainerBuilder $container) 
+
+    public function load(array $configs, ContainerBuilder $container)
     {
-        print_r($configs); 
-        /*        
+        print_r($configs);
+        /*
             (
-                [0] => Array
-                    (
-                        [application_id] => example_application_id
-                        [secret] => example_secret
-                        [file_upload] => 
-                        [permissions] => Array
-                            (
-                            )
-            
-                        [trust_proxy_headers] => 
-                    )
-            
-                [1] => Array
+                [application_id] => example_application_id
+                [secret] => example_secret
+                [file_upload] =>
+                [permissions] => Array
                     (
                     )
-            
+
+                [trust_proxy_headers] =>
             )
         */
     }
@@ -127,33 +119,26 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 class YourExtension extends Extension implements FacebookExtensionInterface
 {
     use FacebookExtensionTrait;
-    
+
     public function getFacebookConfigurationPrefix(array $config, ContainerBuilder $container)
     {
         return 'facebook_';
     }
-    
-    public function load(array $configs, ContainerBuilder $container) 
+
+    public function load(array $configs, ContainerBuilder $container)
     {
-        print_r($configs); 
-        /*        
+        print_r($configs[0]);
+        /*
             (
-                [0] => Array
-                    (
-                        [facebook_application_id] => example_application_id
-                        [facebook_secret] => example_secret
-                        [facebook_file_upload] => 
-                        [facebook_permissions] => Array
-                            (
-                            )
-            
-                        [facebook_trust_proxy_headers] => 
-                    )
-            
-                [1] => Array
+                [facebook_application_id] => example_application_id
+                [facebook_secret] => example_secret
+                [facebook_file_upload] =>
+                [facebook_permissions] => Array
                     (
                     )
-            
+
+                [facebook_trust_proxy_headers] =>
+
             )
         */
     }
