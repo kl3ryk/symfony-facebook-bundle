@@ -24,7 +24,6 @@ class FacebookAdapterTest extends KernelTestCase
         $this->assertInstanceOf('Laelaps\Bundle\Facebook\FacebookAdapter', $facebook);
     }
 
-
     public function testFacebookAdapter()
     {
         $facebook = $this->getContainer()

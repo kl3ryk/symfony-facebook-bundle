@@ -5,7 +5,7 @@ namespace Laelaps\Bundle\Facebook;
 use BaseFacebook;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class FacebookAdapter extends BaseFacebook
+class FacebookSymfonyAdapter extends BaseFacebook
 {
     /**
      * @var \Symfony\Component\HttpFoundation\Session\Session

@@ -2,7 +2,6 @@
 
 namespace Laelaps\Bundle\Facebook;
 
-use Laelaps\Bundle\Facebook\DependencyInjection\FacebookExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
