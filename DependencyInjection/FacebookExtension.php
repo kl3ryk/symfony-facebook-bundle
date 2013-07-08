@@ -2,12 +2,17 @@
 
 namespace Laelaps\Bundle\Facebook\DependencyInjection;
 
+use Laelaps\Bundle\Facebook\Configuration\FacebookAdapter as FacebookAdapterConfiguration;
 use Laelaps\Bundle\Facebook\Configuration\FacebookApplication as FacebookApplicationConfiguration;
+use Laelaps\Bundle\Facebook\Configuration\FacebookBundle as FacebookBundleConfiguration;
 use Laelaps\Bundle\Facebook\Exception\InvalidFacebookConfigurationPrefix;
+use Laelaps\Bundle\Facebook\FacebookAdapter;
 use Laelaps\Bundle\Facebook\FacebookExtensionInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -17,6 +22,21 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class FacebookExtension extends Extension implements PrependExtensionInterface
 {
+    /**
+     * @var string
+     */
+    const CONTAINER_DEFAULT_SERVICE_ALIAS_FACEBOOK_ADAPTER = 'facebook';
+
+    /**
+     * @var string
+     */
+    const CONTAINER_DEFAULT_SESSION_FACEBOOK_ADAPTER_NAMESPACE = 'facebook_';
+
+    /**
+     * @var string
+     */
+    const CONTAINER_SERVICE_ID_FACEBOOK_ADAPTER = 'laelaps.facebook.facebook_adapter';
+
     /**
      * @var \Laelaps\Bundle\Facebook\Configuration\FacebookApplication
      */
@@ -35,7 +55,7 @@ class FacebookExtension extends Extension implements PrependExtensionInterface
      */
     private function prefixFacebookConfiguration(array & $config, FacebookExtensionInterface $extension, ContainerBuilder $container)
     {
-        $prefix = $extension->getFacebookConfigurationPrefix($config, $this, $container);
+        $prefix = $extension->getFacebookConfigurationPrefix($config, $container);
         if (is_null($prefix)) {
             return $config;
         }
@@ -53,7 +73,7 @@ class FacebookExtension extends Extension implements PrependExtensionInterface
 
     public function __construct()
     {
-        $this->configurationSchema = new FacebookApplicationConfiguration;
+        $this->configurationSchema = new FacebookBundleConfiguration;
     }
 
     /**
@@ -80,6 +100,20 @@ class FacebookExtension extends Extension implements PrependExtensionInterface
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $config = $this->getExtensionConfiguration($container);
+
+        $definition = new Definition('Laelaps\Bundle\Facebook\FacebookAdapter');
+        $definition->addArgument([
+            'appId' => $config[FacebookApplicationConfiguration::CONFIG_NODE_NAME_APPLICATION_ID],
+            'secret' => $config[FacebookApplicationConfiguration::CONFIG_NODE_NAME_SECRET],
+            'fileUpload' => $config[FacebookApplicationConfiguration::CONFIG_NODE_NAME_FILE_UPLOAD],
+            'trustForwarded' => $config[FacebookApplicationConfiguration::CONFIG_NODE_NAME_TRUST_PROXY_HEADERS],
+        ]);
+        $definition->addArgument(new Reference('session'));
+        $definition->addArgument(self::CONTAINER_DEFAULT_SESSION_FACEBOOK_ADAPTER_NAMESPACE);
+
+        $container->setDefinition(self::CONTAINER_SERVICE_ID_FACEBOOK_ADAPTER, $definition);
+        $container->setAlias($config[FacebookAdapterConfiguration::CONFIG_NODE_NAME_ADAPTER_SERVICE_ALIAS], self::CONTAINER_SERVICE_ID_FACEBOOK_ADAPTER);
     }
 
     /**
@@ -90,10 +124,15 @@ class FacebookExtension extends Extension implements PrependExtensionInterface
     public function prepend(ContainerBuilder $container)
     {
         $config = $this->getExtensionConfiguration($container);
+        $stripped = $this->configurationSchema->stripFacebookAdapterConfiguration($config);
 
         foreach ($container->getExtensions() as $name => $extension) {
             if ($extension instanceof FacebookExtensionInterface) {
-                $container->prependExtensionConfig($name, $this->prefixFacebookConfiguration($config, $extension, $container));
+                if ($extension->getFacebookApplicationConfigurationOnly($container)) {
+                    $container->prependExtensionConfig($name, $this->prefixFacebookConfiguration($stripped, $extension, $container));
+                } else {
+                    $container->prependExtensionConfig($name, $this->prefixFacebookConfiguration($config, $extension, $container));
+                }
             }
         }
     }

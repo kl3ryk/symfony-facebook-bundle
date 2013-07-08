@@ -3,11 +3,12 @@
 namespace Laelaps\Bundle\Facebook\Tests\Configuration;
 
 use Laelaps\Bundle\Facebook\Configuration\FacebookApplication as FacebookApplicationConfiguration;
+use Laelaps\Bundle\Facebook\DependencyInjection\FacebookExtension;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 
-class FacebookApplicationConfigurationTest extends PHPUnit_Framework_TestCase
+class FacebookApplicationTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @param \Symfony\Component\Config\Definition\ConfigurationInterface $configuration

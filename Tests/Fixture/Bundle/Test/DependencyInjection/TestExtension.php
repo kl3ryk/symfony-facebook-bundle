@@ -30,13 +30,21 @@ class TestExtension extends Extension implements FacebookExtensionInterface
 
     /**
      * @param array $config
-     * @param \Laelaps\Bundle\Facebook\DependencyInjection\FacebookExtension $extension
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @return null|string
      */
-    public function getFacebookConfigurationPrefix(array $config, FacebookExtension $extension, ContainerBuilder $container)
+    public function getFacebookConfigurationPrefix(array $config, ContainerBuilder $container)
     {
         return self::$prefix;
+    }
+
+    /**
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @return bool
+     */
+    public function getFacebookApplicationConfigurationOnly(ContainerBuilder $container)
+    {
+        return true;
     }
 
     /**
@@ -52,6 +60,8 @@ class TestExtension extends Extension implements FacebookExtensionInterface
         $phpunit->assertCount(2, $configs, 'bundle should have its own config and facebook bundle prepended config');
 
         $config = $configs[0];
+
+        $phpunit->assertCount(5, $config, 'bundle configuration is oversized');
 
         $phpunit->assertArrayHasKey(self::$prefix . FacebookApplicationConfiguration::CONFIG_NODE_NAME_APPLICATION_ID, $config);
         $phpunit->assertArrayHasKey(self::$prefix . FacebookApplicationConfiguration::CONFIG_NODE_NAME_FILE_UPLOAD, $config);

@@ -2,6 +2,7 @@
 
 namespace Laelaps\Bundle\Facebook\Configuration;
 
+use Laelaps\Bundle\Facebook\DependencyInjection\FacebookExtension;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -42,8 +43,9 @@ class FacebookApplication implements ConfigurationInterface
      * @param \Symfony\Component\Config\Definition\Builder\NodeDefinition $rootNode
      * @param bool $isRequired
      * @return void
+     * @see \Laelaps\Bundle\Facebook\Configuration\FacebookBundle::getConfigTreeBuilder
      */
-    public function addFacebookApplicationSection(NodeDefinition $rootNode, $isRequired = false)
+    public function addFacebookApplicationSection(NodeDefinition $rootNode)
     {
         $rootNode
             ->children()
