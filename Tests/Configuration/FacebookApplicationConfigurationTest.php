@@ -3,8 +3,6 @@
 namespace Laelaps\Bundle\Facebook\Tests\Configuration;
 
 use Laelaps\Bundle\Facebook\Configuration\FacebookApplication as FacebookApplicationConfiguration;
-use Laelaps\Bundle\Facebook\DependencyInjection\DashboardExtension;
-use Laelaps\Bundle\Facebook\Repository\FeedRepository;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;

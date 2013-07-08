@@ -6,10 +6,8 @@ use Laelaps\Bundle\Facebook\Configuration\FacebookApplication as FacebookApplica
 use Laelaps\Bundle\Facebook\Exception\InvalidFacebookConfigurationPrefix;
 use Laelaps\Bundle\Facebook\FacebookExtensionInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**

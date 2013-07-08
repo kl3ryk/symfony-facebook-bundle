@@ -16,7 +16,7 @@ class InvalidFacebookConfigurationPrefix extends DomainException
      */
     public function __construct($prefix, FacebookExtensionInterface $extension, Exception $previous = null)
     {
-        $message = sprintf('"%s" returned "%s" as a configuration prefix, expected "string".', gettype($prefix));
+        $message = sprintf('"%s" returned "%s" as a configuration prefix, expected "string".', get_class($extension), gettype($prefix));
 
         parent::__construct($message, $code = 0, $previous);
     }

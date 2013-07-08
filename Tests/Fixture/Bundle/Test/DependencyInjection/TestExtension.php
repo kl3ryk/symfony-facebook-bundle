@@ -5,14 +5,10 @@ namespace Laelaps\Bundle\Facebook\Tests\Fixture\Bundle\Test\DependencyInjection;
 use BadMethodCallException;
 use Laelaps\Bundle\Facebook\Configuration\FacebookApplication as FacebookApplicationConfiguration;
 use Laelaps\Bundle\Facebook\DependencyInjection\FacebookExtension;
-use Laelaps\Bundle\Facebook\Exception\InvalidFacebookConfigurationPrefix;
 use Laelaps\Bundle\Facebook\FacebookExtensionInterface;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class TestExtension extends Extension implements FacebookExtensionInterface
