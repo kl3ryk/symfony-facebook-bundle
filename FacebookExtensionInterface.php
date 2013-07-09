@@ -10,6 +10,7 @@ interface FacebookExtensionInterface extends ExtensionInterface
     /**
      * Optionally prefix imported configuration with given string.
      *
+     * @api
      * @param array $config
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @return null|string
@@ -19,6 +20,7 @@ interface FacebookExtensionInterface extends ExtensionInterface
     /**
      * Tell whether to strip dependency injection configuration or not.
      *
+     * @api
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @return bool if true then strip dependencyinjection configuration section
      * @see \Laelaps\Bundle\Facebook\Configuration\FacebookApplication::addFacebookAdapterSection

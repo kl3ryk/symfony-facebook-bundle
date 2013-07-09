@@ -25,6 +25,7 @@ class FacebookAdapter implements ConfigurationInterface
     const ROOT_NODE = 'facebook';
 
     /**
+     * @api
      * @param \Symfony\Component\Config\Definition\Builder\NodeDefinition $rootNode
      * @param bool $isRequired
      * @return void

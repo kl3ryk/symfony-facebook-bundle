@@ -150,3 +150,7 @@ class YourExtension extends Extension implements FacebookExtensionInterface
     }
 }
 ```
+
+## Semantic Versioning
+
+This repository follows [Semantic Versioning 2.0.0](http://semver.org/).

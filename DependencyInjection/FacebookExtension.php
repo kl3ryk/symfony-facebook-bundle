@@ -77,6 +77,28 @@ class FacebookExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
+     * @api
+     * @param array $config
+     * @param string $serviceId
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @return void
+     */
+    public function createFacebookAdapterService(array $config, $serviceId, ContainerBuilder $container)
+    {
+        $definition = new Definition('Laelaps\Bundle\Facebook\FacebookAdapter');
+        $definition->addArgument([
+            'appId' => $config[FacebookApplicationConfiguration::CONFIG_NODE_NAME_APPLICATION_ID],
+            'secret' => $config[FacebookApplicationConfiguration::CONFIG_NODE_NAME_SECRET],
+            'fileUpload' => $config[FacebookApplicationConfiguration::CONFIG_NODE_NAME_FILE_UPLOAD],
+            'trustForwarded' => $config[FacebookApplicationConfiguration::CONFIG_NODE_NAME_TRUST_PROXY_HEADERS],
+        ]);
+        $definition->addArgument(new Reference('session'));
+        $definition->addArgument($config[FacebookAdapterConfiguration::CONFIG_NODE_NAME_ADAPTER_SESSION_NAMESPACE]);
+
+        $container->setDefinition($serviceId, $definition);
+    }
+
+    /**
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      * @return array
      */
@@ -102,17 +124,8 @@ class FacebookExtension extends Extension implements PrependExtensionInterface
     {
         $config = $this->getExtensionConfiguration($container);
 
-        $definition = new Definition('Laelaps\Bundle\Facebook\FacebookAdapter');
-        $definition->addArgument([
-            'appId' => $config[FacebookApplicationConfiguration::CONFIG_NODE_NAME_APPLICATION_ID],
-            'secret' => $config[FacebookApplicationConfiguration::CONFIG_NODE_NAME_SECRET],
-            'fileUpload' => $config[FacebookApplicationConfiguration::CONFIG_NODE_NAME_FILE_UPLOAD],
-            'trustForwarded' => $config[FacebookApplicationConfiguration::CONFIG_NODE_NAME_TRUST_PROXY_HEADERS],
-        ]);
-        $definition->addArgument(new Reference('session'));
-        $definition->addArgument(self::CONTAINER_DEFAULT_SESSION_FACEBOOK_ADAPTER_NAMESPACE);
+        $this->createFacebookAdapterService($config, self::CONTAINER_SERVICE_ID_FACEBOOK_ADAPTER, $container);
 
-        $container->setDefinition(self::CONTAINER_SERVICE_ID_FACEBOOK_ADAPTER, $definition);
         $container->setAlias($config[FacebookAdapterConfiguration::CONFIG_NODE_NAME_ADAPTER_SERVICE_ALIAS], self::CONTAINER_SERVICE_ID_FACEBOOK_ADAPTER);
     }
 

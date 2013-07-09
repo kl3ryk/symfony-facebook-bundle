@@ -100,7 +100,7 @@ class TestExtension extends Extension implements FacebookExtensionInterface
      * @param \PHPUnit_Framework_TestCase $phpunit
      * @return void
      */
-    public static function setPhpUnitTestCase(PHPUnit_Framework_TestCase $phpunit)
+    public static function setPhpUnitTestCase(PHPUnit_Framework_TestCase $phpunit = null)
     {
         self::$phpunit = $phpunit;
     }
