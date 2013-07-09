@@ -10,6 +10,7 @@
             "Laelaps\\Bundle\\Facebook": ""
         }
     },
+    "description": "This bundle provides ready to use official Facebook SDK client and common Facebook configuration for any Symfony bundle.",
     "keywords": ["bundle", "facebook", "symfony"],
     "license": "MIT",
     "minimum-stability": "stable",
