@@ -18,15 +18,13 @@ class FacebookExtensionTraitTest extends PHPUnit_Framework_TestCase
         $classReflection = new ReflectionClass($class);
         $classMethods = $classReflection->getMethods();
 
+        $classMethodNames = [];
         foreach ($classMethods as $index => $method) {
             if ($method->getDeclaringClass()->getName() !== $class) {
                 unset($classMethods[$index]);
+            } else {
+                $classMethodNames[] = $method->getName();
             }
-        }
-
-        $classMethodNames = [];
-        foreach ($classMethods as $method) {
-            $classMethodNames[] = $method->getName();
         }
 
         return [$classMethods, $classMethodNames];
