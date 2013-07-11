@@ -2,7 +2,10 @@
 
 This bundle provides **ready to use official Facebook SDK client** and common Facebook configuration (implements *PrependExtensionInterface*, see: http://symfony.com/doc/current/cookbook/bundles/prepend_extension.html) for any Symfony bundle.
 
-Facebook SDK client is **integrated with Symfony session storage** (unlike vanilla client which uses native PHP sessions).
+Facebook SDK client:
+* is integrated with Symfony session storage (unlike vanilla client which uses native PHP sessions)
+* is integrated with Symfony logger
+* uses Symfony "Request" object internally
 
 ## Bundles Using This Bundle
 
