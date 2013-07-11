@@ -69,6 +69,20 @@ class FacebookAdapter extends BaseFacebook
     /**
      * {@inheritDoc}
      */
+    protected function getCurrentUrl()
+    {
+        try {
+            $request = $this->getRequest();
+        } catch (BadMethodCallException $e) {
+            return parent::getCurrentUrl();
+        }
+
+        return $request->getUri();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     protected function getHttpHost()
     {
         try {
@@ -92,20 +106,6 @@ class FacebookAdapter extends BaseFacebook
         }
 
         return $request->getScheme();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getCurrentUrl()
-    {
-        try {
-            $request = $this->getRequest();
-        } catch (BadMethodCallException $e) {
-            return parent::getCurrentUrl();
-        }
-
-        return $request->getUri();
     }
 
     /**
@@ -187,6 +187,20 @@ class FacebookAdapter extends BaseFacebook
         }
 
         return $this->container;
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param array $parameters
+     */
+    public function getLoginUrlForRequest(Request $request, array $parameters = [])
+    {
+        $backupRequest = $this->request;
+        $this->request = $request;
+        $ret = parent::getLoginUrl($parameters);
+        $this->request = $backupRequest;
+
+        return $ret;
     }
 
     /**
