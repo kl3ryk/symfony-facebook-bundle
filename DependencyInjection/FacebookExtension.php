@@ -94,6 +94,8 @@ class FacebookExtension extends Extension implements PrependExtensionInterface
         ]);
         $definition->addArgument(new Reference('session'));
         $definition->addArgument($config[FacebookAdapterConfiguration::CONFIG_NODE_NAME_ADAPTER_SESSION_NAMESPACE]);
+        $definition->addMethodCall('setContainer', [new Reference('service_container')]);
+        $definition->addMethodCall('staticSetContainer', [new Reference('service_container')]);
 
         $container->setDefinition($serviceId, $definition);
     }
