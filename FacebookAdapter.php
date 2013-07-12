@@ -4,7 +4,8 @@ namespace Laelaps\Bundle\Facebook;
 
 use BadMethodCallException;
 use BaseFacebook;
-use FacebookApiException;
+use FacebookApiException as BaseFacebookApiException;
+use Laelaps\Bundle\Facebook\Exception\FacebookApiException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -154,7 +155,7 @@ class FacebookAdapter extends BaseFacebook
     {
         try {
             parent::throwAPIException($result);
-        } catch (FacebookApiException $e) {
+        } catch (BaseFacebookApiException $e) {
             throw new FacebookApiException($e, $this);
         }
     }

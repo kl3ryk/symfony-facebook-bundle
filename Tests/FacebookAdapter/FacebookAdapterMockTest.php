@@ -1,0 +1,92 @@
+<?php
+
+namespace Laelaps\Bundle\Facebook\Tests\FacebookAdapter;
+
+use Laelaps\Bundle\Facebook\FacebookAdapter\FacebookAdapterMock;
+use Laelaps\Bundle\Facebook\Tests\KernelTestCase;
+
+class FacebookAdapterMockTest extends KernelTestCase
+{
+    /**
+     * @return \Laelaps\Bundle\Facebook\FacebookAdapter\FacebookAdapterMock
+     */
+    private function getFacebookAdapterMock()
+    {
+        $container = $this->getContainer();
+
+        return new FacebookAdapterMock([
+            'appId' => uniqid(),
+            'secret' => uniqid(),
+        ], $container->get('session'), uniqid());
+    }
+
+    public function testThatExtendedAccessTokenCanBeMocked()
+    {
+        $extendedAccessToken = uniqid();
+
+        $facebook = $this->getFacebookAdapterMock();
+        $facebook->setMockedExtendedAccessToken($extendedAccessToken);
+        $facebook->setExtendedAccessToken();
+
+        $this->assertSame($extendedAccessToken, $facebook->getAccessToken());
+    }
+
+    public function testThatUserCanBeReplaced()
+    {
+        $user = uniqid();
+
+        $facebook = $this->getFacebookAdapterMock();
+        $facebook->setUser($user);
+
+        $this->assertSame($user, $facebook->getUser());
+    }
+
+    public function testThatApiCallsCanBeMocked()
+    {
+        $response = [ uniqid() => uniqid() ];
+
+        $facebook = $this->getFacebookAdapterMock();
+
+        $this->assertFalse($facebook->hasMockedGraphApiCall('/me'));
+
+        $facebook->setMockedGraphApiCall('/me', $response);
+
+        $this->assertTrue($facebook->hasMockedGraphApiCall('/me'));
+        $this->assertSame($response, $facebook->api('/me'));
+    }
+
+    public function testThatApiCallsCanBeUnmocked()
+    {
+        $response = [ uniqid() => uniqid() ];
+
+        $facebook = $this->getFacebookAdapterMock();
+
+        $this->assertFalse($facebook->hasMockedGraphApiCall('/me'));
+
+        $facebook->setMockedGraphApiCall('/me', $response);
+
+        $this->assertTrue($facebook->hasMockedGraphApiCall('/me'));
+
+        $facebook->setMockedGraphApiCall('/me', null);
+
+        $this->assertFalse($facebook->hasMockedGraphApiCall('/me'));
+    }
+
+    /**
+     * @expectedException \Laelaps\Bundle\Facebook\Exception\FacebookApiException
+     */
+    public function testThatMockedApiCallCanLeadToException()
+    {
+        $response = [ 'error' => uniqid() ];
+
+        $facebook = $this->getFacebookAdapterMock();
+
+        $this->assertFalse($facebook->hasMockedGraphApiCall('/me'));
+
+        $facebook->setMockedGraphApiCall('/me', $response);
+
+        $this->assertTrue($facebook->hasMockedGraphApiCall('/me'));
+
+        $facebook->api('/me');
+    }
+}
