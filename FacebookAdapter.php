@@ -4,6 +4,7 @@ namespace Laelaps\Bundle\Facebook;
 
 use BadMethodCallException;
 use BaseFacebook;
+use FacebookApiException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -144,6 +145,18 @@ class FacebookAdapter extends BaseFacebook
         $this->storedPersistentData[$key] = true;
 
         $this->getSession()->set($this->namespaceSessionKey($key), $value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function throwAPIException($result)
+    {
+        try {
+            parent::throwAPIException($result);
+        } catch (FacebookApiException $e) {
+            throw new FacebookApiException($e, $this);
+        }
     }
 
     /**
