@@ -2,8 +2,10 @@
 
 namespace Laelaps\Bundle\Facebook\Tests\FacebookAdapter;
 
+use Laelaps\Bundle\Facebook\FacebookAdapter;
 use Laelaps\Bundle\Facebook\FacebookAdapter\FacebookAdapterMock;
 use Laelaps\Bundle\Facebook\Tests\KernelTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 class FacebookAdapterMockTest extends KernelTestCase
 {
@@ -88,5 +90,30 @@ class FacebookAdapterMockTest extends KernelTestCase
         $this->assertTrue($facebook->hasMockedGraphApiCall('/me'));
 
         $facebook->api('/me');
+    }
+
+    public function testThatMockedAdapterCanBeCreatedFromOtherAdapter()
+    {
+        $container = $this->getContainer();
+
+        $config = [
+            'appId' => ($applicationId = uniqid()),
+            'secret' => ($secret = uniqid()),
+        ];
+        $session = $container->get('session');
+        $sessionNamespace = uniqid();
+        $request = new Request;
+
+        $facebookAdapter = new FacebookAdapter($config, $session, $sessionNamespace, $request, $container);
+
+        $facebookAdapterMock = FacebookAdapterMock::fromFacebookAdapter($facebookAdapter);
+
+        $this->assertInstanceOf('Laelaps\Bundle\Facebook\FacebookAdapter\FacebookAdapterMock', $facebookAdapterMock);
+
+        $this->assertSame($applicationId, $facebookAdapterMock->getAppId());
+        $this->assertSame($container, $facebookAdapterMock->getContainer());
+        $this->assertSame($request, $facebookAdapterMock->getRequest());
+        $this->assertSame($secret, $facebookAdapterMock->getAppSecret());
+        $this->assertSame($session, $facebookAdapterMock->getSession());
     }
 }

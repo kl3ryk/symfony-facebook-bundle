@@ -131,4 +131,33 @@ class FacebookAdapterMock extends FacebookAdapter
     {
         $this->user = $user;
     }
+
+    /**
+     * @param \Laelaps\Bundle\Facebook\FacebookAdapter $facebookAdapter
+     * @return \Laelaps\Bundle\Facebook\FacebookAdapter\FacebookAdapterMock
+     */
+    public static function fromFacebookAdapter(FacebookAdapter $facebookAdapter)
+    {
+        try {
+            $session = $facebookAdapter->getSession();
+        } catch (BadMethodCallException $e) {
+            $session = null;
+        }
+
+        $sessionNamespace = $facebookAdapter->getSessionNamespace();
+
+        try {
+            $request = $facebookAdapter->getRequest();
+        } catch (BadMethodCallException $e) {
+            $request = null;
+        }
+
+        try {
+            $container = $facebookAdapter->getContainer();
+        } catch (BadMethodCallException $e) {
+            $container = null;
+        }
+
+        return new static($facebookAdapter->config, $session, $sessionNamespace, $request, $container);
+    }
 }

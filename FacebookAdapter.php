@@ -16,9 +16,13 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class FacebookAdapter extends BaseFacebook
 {
     /**
+     * Config is stored for easier inheritance and logging purposes.
+     * Changing this variable WILL NOT affect object configuration.
+     *
      * @var mixed
+     * @see \Laelaps\Bundle\Facebook\FacebookAdapter\FacebookAdapterMock::fromFacebookAdapter
      */
-    private $config;
+    protected $config;
 
     /**
      * @var \Symfony\Component\DependencyInjection\ContainerInterface
@@ -177,15 +181,16 @@ class FacebookAdapter extends BaseFacebook
      * @param \Symfony\Component\HttpFoundation\Session\Session $session
      * @param string $sessionNamespace
      * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
-    public function __construct(array $config, Session $session = null, $sessionNamespace = null, Request $request = null)
+    public function __construct(array $config, Session $session = null, $sessionNamespace = null, Request $request = null, ContainerInterface $container = null)
     {
-        // config is stored only for logging purposes
         $this->config = $config;
 
+        $this->setContainer($container);
+        $this->setRequest($request);
         $this->setSession($session);
         $this->setSessionNamespace($sessionNamespace);
-        $this->setRequest($request);
 
         parent::__construct($config);
     }
