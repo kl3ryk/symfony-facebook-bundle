@@ -1,4 +1,4 @@
-# Symfony Facebook Bundle
+# Symfony Facebook Bundle [![Build Status](https://travis-ci.org/kl3ryk/symfony-facebook-bundle.png?branch=master)](https://travis-ci.org/kl3ryk/symfony-facebook-bundle)
 
 This bundle provides **ready to use official Facebook SDK client** and common Facebook configuration (implements *PrependExtensionInterface*, see: http://symfony.com/doc/current/cookbook/bundles/prepend_extension.html) for any Symfony bundle.
 
@@ -9,7 +9,7 @@ Facebook SDK client:
 
 ## Bundles Using This Bundle
 
-* [laelaps/symfony-facebook-authentication-bundle](https://github.com/laelaps/symfony-facebook-authentication-bundle) (of course)
+* [kl3ryk/symfony-facebook-authentication-bundle](https://github.com/kl3ryk/symfony-facebook-authentication-bundle) (of course)
 
 If you are using this bundle, contact me or update README in your pull request.
 
