@@ -3,6 +3,10 @@
         {
             "name": "Mateusz Charytoniuk",
             "email": "mateusz.charytoniuk@gmail.com"
+        },
+        {
+            "name": "Paweł Łaskarzewski",
+            "email": "kl3ryk@gmail.com"
         }
     ],
     "autoload": {
@@ -14,7 +18,7 @@
     "keywords": ["bundle", "facebook", "symfony"],
     "license": "MIT",
     "minimum-stability": "stable",
-    "name": "laelaps/symfony-facebook-bundle",
+    "name": "kl3ryk/symfony-facebook-bundle",
     "require": {
         "ext-curl": "*",
         "facebook/php-sdk": "~3.2,>=3.2.2",
