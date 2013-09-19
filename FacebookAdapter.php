@@ -110,8 +110,8 @@ class FacebookAdapter extends BaseFacebook
      */
     protected function clearAllPersistentData()
     {
-        foreach ($this->session->all() as $k => $v) {
-            if (0 !== strpos($k, $this->sessionNamespace)) {
+        foreach ($this->session->all() as $key => $v) {
+            if (0 !== strpos($key, $this->sessionNamespace)) {
                 continue;
             }
 
@@ -214,7 +214,7 @@ class FacebookAdapter extends BaseFacebook
     protected static function errorLog($message)
     {
         if (static::$logger instanceof LoggerInterface) {
-            static::$logger->error($message, $context = $this->config);
+            static::$logger->error($message);
         } else {
             parent::errorLog($message);
         }
