@@ -111,7 +111,7 @@ class FacebookAdapter extends BaseFacebook
     protected function clearAllPersistentData()
     {
         foreach ($this->session->all() as $k => $v) {
-            if (0 !== strpos($k, $this->namespaceSessionKey)) {
+            if (0 !== strpos($k, $this->sessionNamespace)) {
                 continue;
             }
 
