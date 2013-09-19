@@ -45,11 +45,6 @@ class FacebookAdapter extends BaseFacebook
     private $sessionNamespace;
 
     /**
-     * @var array
-     */
-    private $storedPersistentData = [];
-
-    /**
      * @var \Psr\Log\LoggerInterface
      */
     private static $logger;
@@ -70,20 +65,6 @@ class FacebookAdapter extends BaseFacebook
         }
 
         return $this->sessionNamespace . $key;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getCurrentUrl()
-    {
-        try {
-            $request = $this->getRequest();
-        } catch (BadMethodCallException $e) {
-            return parent::getCurrentUrl();
-        }
-
-        return $request->getUri();
     }
 
     /**
@@ -129,7 +110,11 @@ class FacebookAdapter extends BaseFacebook
      */
     protected function clearAllPersistentData()
     {
-        foreach ($this->storedPersistentData as $key => $value) {
+        foreach ($this->session->all() as $k => $v) {
+            if (0 !== strpos($k, $this->namespaceSessionKey)) {
+                continue;
+            }
+
             $this->clearPersistentData($key);
         }
     }
@@ -147,8 +132,6 @@ class FacebookAdapter extends BaseFacebook
      */
     protected function setPersistentData($key, $value)
     {
-        $this->storedPersistentData[$key] = true;
-
         $this->getSession()->set($this->namespaceSessionKey($key), $value);
     }
 
@@ -161,6 +144,67 @@ class FacebookAdapter extends BaseFacebook
             parent::throwAPIException($result);
         } catch (BaseFacebookApiException $e) {
             throw new FacebookApiException($e, $this);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getLoginUrl($params = array())
+    {
+        $this->establishCSRFTokenState();
+        $currentUrl = $this->getCurrentUrl();
+        // if 'scope' is passed as an array, convert to comma separated list
+        $scopeParams = isset($params['scope']) ? $params['scope'] : null;
+        if ($scopeParams && is_array($scopeParams)) {
+            $params['scope'] = implode(',', $scopeParams);
+        }
+
+        return $this->getUrl(
+            'www',
+            'dialog/oauth',
+            array_merge(
+                array(
+                    'client_id' => $this->getAppId(),
+                    'redirect_uri' => $currentUrl, // possibly overwritten
+                    'state' => $this->getState(),
+                ),
+                $params
+            )
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getCode()
+    {
+        if (isset($_REQUEST['code'])) {
+            if ($this->getState() !== null &&
+                isset($_REQUEST['state']) &&
+                $this->getState() === $_REQUEST['state']) {
+                    // CSRF state has done its job, so clear it
+                    $this->setState(null);
+                    $this->clearPersistentData('state');
+
+                    return $_REQUEST['code'];
+            } else {
+                self::errorLog('CSRF state token does not match one provided.');
+
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function establishCSRFTokenState()
+    {
+        if ($this->getState() === null) {
+            $this->setState(md5(uniqid(mt_rand(), true)));
         }
     }
 
@@ -341,5 +385,15 @@ class FacebookAdapter extends BaseFacebook
     public static function staticSetContainer(ContainerInterface $container = null)
     {
         static::$staticContainer = $container;
+    }
+
+    private function getState()
+    {
+        return $this->getPersistentData('state', null);
+    }
+
+    private function setState($state)
+    {
+        $this->setPersistentData('state', $state);
     }
 }
